@@ -146,14 +146,13 @@
 					{
 						"activity": "Create Schema If Does Not Exists",
 						"dependencyConditions": [
-							"Succeeded",
-							"Failed"
+							"Succeeded"
 						]
 					}
 				],
 				"policy": {
 					"timeout": "0.00:30:00",
-					"retry": 3,
+					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
@@ -283,8 +282,7 @@
 					{
 						"activity": "Create Schema If Does Not Exists",
 						"dependencyConditions": [
-							"Succeeded",
-							"Failed"
+							"Succeeded"
 						]
 					}
 				],
@@ -375,8 +373,7 @@
 					{
 						"activity": "Create Schema If Does Not Exists",
 						"dependencyConditions": [
-							"Succeeded",
-							"Failed"
+							"Succeeded"
 						]
 					}
 				],
@@ -468,7 +465,7 @@
 			},
 			"SynapseWorkspaceName": {
 				"type": "string",
-				"defaultValue": "msftq5gzoqdmc2cy6pocws1"
+				"defaultValue": "msftq5gzoqdmc2cy6pocws1.database.windows.net"
 			},
 			"SQLDedicatedPoolName": {
 				"type": "string",
