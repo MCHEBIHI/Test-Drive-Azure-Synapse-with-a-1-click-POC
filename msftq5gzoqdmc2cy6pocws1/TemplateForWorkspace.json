@@ -184,7 +184,8 @@
 							{
 								"activity": "Create Schema If Does Not Exists",
 								"dependencyConditions": [
-									"Succeeded"
+									"Succeeded",
+									"Failed"
 								]
 							}
 						],
@@ -274,7 +275,7 @@
 						],
 						"policy": {
 							"timeout": "0.00:10:00",
-							"retry": 3,
+							"retry": 0,
 							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
 							"secureInput": false
@@ -322,7 +323,8 @@
 							{
 								"activity": "Create Schema If Does Not Exists",
 								"dependencyConditions": [
-									"Succeeded"
+									"Succeeded",
+									"Failed"
 								]
 							}
 						],
@@ -414,7 +416,8 @@
 							{
 								"activity": "Create Schema If Does Not Exists",
 								"dependencyConditions": [
-									"Succeeded"
+									"Succeeded",
+									"Failed"
 								]
 							}
 						],
@@ -541,6 +544,7 @@
 				"[concat(variables('workspaceId'), '/datasets/faresDataSource')]",
 				"[concat(variables('workspaceId'), '/datasets/faresDataSink')]",
 				"[concat(variables('workspaceId'), '/dataflows/tripFaresDataTransformations')]",
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
 				"[concat(variables('workspaceId'), '/datasets/azureSynapseAnalyticsSchema')]",
 				"[concat(variables('workspaceId'), '/datasets/AzureSynapseAnalyticsTripsData')]",
 				"[concat(variables('workspaceId'), '/datasets/AzureSynapseAnalyticsFaresData')]",
