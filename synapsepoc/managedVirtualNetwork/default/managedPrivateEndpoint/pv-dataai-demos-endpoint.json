@@ -1,0 +1,7 @@
+{
+	"name": "pv-dataai-demos-endpoint",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/rg_dataai_demos/providers/Microsoft.Purview/accounts/pv-dataai-demos",
+		"groupId": "account"
+	}
+}
