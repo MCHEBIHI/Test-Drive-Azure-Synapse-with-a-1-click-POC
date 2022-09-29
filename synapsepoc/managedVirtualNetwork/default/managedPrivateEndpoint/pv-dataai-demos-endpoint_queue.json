@@ -1,0 +1,7 @@
+{
+	"name": "pv-dataai-demos-endpoint_queue",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/managed-rg-pv-dataai-demos/providers/Microsoft.Storage/storageAccounts/scaneastusbpycwtg",
+		"groupId": "queue"
+	}
+}
