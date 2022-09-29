@@ -1,0 +1,7 @@
+{
+	"name": "pv-dataai-demos-endpoint_namespace",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/managed-rg-pv-dataai-demos/providers/Microsoft.EventHub/namespaces/Atlas-16787d79-1e71-4ae9-91ae-e387b8cc69a4",
+		"groupId": "namespace"
+	}
+}
