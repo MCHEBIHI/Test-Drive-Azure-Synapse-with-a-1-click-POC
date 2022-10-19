@@ -19,6 +19,9 @@
 		},
 		"keyVaultLinkedservice_properties_typeProperties_baseUrl": {
 			"value": "@{concat('https://',linkedService().keyVaultName,'.vault.azure.net/')}"
+		},
+		"HttpServerCanadianOpenDataHealthcareLinkedService_properties_typeProperties_url": {
+			"value": "https://www150.statcan.gc.ca"
 		}
 	}
 }
