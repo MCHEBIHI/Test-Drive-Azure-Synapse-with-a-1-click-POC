@@ -1,5 +1,5 @@
 {
-	"name": "Pipeline 1",
+	"name": "ODFH_Pipeline",
 	"properties": {
 		"activities": [
 			{
@@ -28,11 +28,23 @@
 							}
 						}
 					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "ODHF_ZIP_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ODHF_ZIP_Sink",
 						"type": "DatasetReference"
 					}
 				]
