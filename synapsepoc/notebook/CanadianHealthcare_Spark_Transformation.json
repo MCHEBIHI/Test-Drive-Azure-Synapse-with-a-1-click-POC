@@ -1,0 +1,132 @@
+{
+	"name": "CanadianHealthcare_Spark_Transformation",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "ws1sparkpool1",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "5ceea4e6-89b6-40e1-a33e-e2be8f0e4f33"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/rg_dataai_demos/providers/Microsoft.Synapse/workspaces/msftq5gzoqdmc2cy6pocws1/bigDataPools/ws1sparkpool1",
+				"name": "ws1sparkpool1",
+				"type": "Spark",
+				"endpoint": "https://msftq5gzoqdmc2cy6pocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/ws1sparkpool1",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 5,
+				"cores": 8,
+				"memory": 56,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"import zipfile\n",
+					"from pyspark.sql import SparkSession\n",
+					"from pyspark.sql.types import *\n",
+					"from pyspark.sql.functions import *"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"input_path = \"https://msftq5gzoqdmc2cy6poc.blob.core.windows.net/public/CanadianHealthcare/raw/\"\r\n",
+					"output_path = \"https://msftq5gzoqdmc2cy6poc.blob.core.windows.net/public/CanadianHealthcare/silver/\""
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark = SparkSession.builder.appName(\"name\").getOrCreate()\r\n",
+					"\r\n",
+					"\r\n",
+					"\r\n",
+					"for file in [input_path+\"ODFH_V1.zip\"]:\r\n",
+					"    obj = \r\n",
+					"    with io.BytesIO(obj.get()[\"Body\"].read()) as tf:\r\n",
+					"        tf.seek(0)\r\n",
+					"        with zipfile.ZipFile(tf, mode='r') as zipf:\r\n",
+					"            for subfile in zipf.namelist():\r\n",
+					"                zipf.extract(subfile, outputZip)\r\n",
+					"        df = spark.read.option(\"header\", \"true\").csv(outputZip) \r\n",
+					"\r\n",
+					"df.write.format(\"delta\").save(output_path)"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"odfh_v1_df = spark.read.format(\"delta\").load(output_path)\r\n",
+					"display(odfh_v1_df)"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}

@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "IngestHTTPZipFile",
+				"name": "IngestHTTPZipFile_To_RAWZone",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -44,7 +44,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ODHF_ZIP_Sink",
+						"referenceName": "ODFH_ZIP_INK",
 						"type": "DatasetReference"
 					}
 				]
