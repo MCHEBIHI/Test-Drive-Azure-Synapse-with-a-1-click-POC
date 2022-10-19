@@ -1,5 +1,5 @@
 {
-	"name": "ODFH_ZIP_INK",
+	"name": "ODFH_ZIP_SINK",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "TripFaresDataLakeStorageLinkedService",
@@ -17,6 +17,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "*.csv",
 				"folderPath": "CanadianHealthcare/raw",
 				"fileSystem": "public"
 			}
