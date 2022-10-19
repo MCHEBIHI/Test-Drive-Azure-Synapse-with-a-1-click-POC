@@ -1,5 +1,5 @@
 {
-	"name": "ODHF_ZIP",
+	"name": "ODHF_ZIP_Source",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "HttpServerCanadianOpenDataHealthcareLinkedService",
