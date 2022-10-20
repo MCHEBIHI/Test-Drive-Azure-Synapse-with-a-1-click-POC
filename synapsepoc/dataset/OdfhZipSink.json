@@ -17,8 +17,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "CanadianHealthcare/Landing",
+				"folderPath": "CanadianHealthcare/Raw",
 				"fileSystem": "public"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Optimal"
 			}
 		}
 	}
