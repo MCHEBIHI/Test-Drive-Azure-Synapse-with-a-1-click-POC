@@ -1,0 +1,30 @@
+{
+	"name": "ODFH_CSV_SINK",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TripFaresDataLakeStorageLinkedService",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"keyVaultName": "kvmsftq5gzoqdmc2cy6poc",
+				"datalakeAccountName": "msftq5gzoqdmc2cy6poc"
+			}
+		},
+		"folder": {
+			"name": "CanadianHealthcare"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "CanadianHealthcare/raw",
+				"fileSystem": "public"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
