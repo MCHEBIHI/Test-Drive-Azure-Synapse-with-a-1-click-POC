@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "caeb58cc-31de-4739-8177-30d056f5a39d"
+				"spark.autotune.trackingId": "c95b0bd2-f5e3-4539-b6ac-7f0a2dea1ad3"
 			}
 		},
 		"metadata": {
@@ -54,7 +54,26 @@
 					"from pyspark.sql.types import *\n",
 					"from pyspark.sql.functions import *"
 				],
-				"execution_count": 19
+				"execution_count": 23
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", \"TripFaresDataLakeStorageLinkedService\") \r\n",
+					"spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\") "
+				],
+				"execution_count": 27
 			},
 			{
 				"cell_type": "code",
@@ -72,7 +91,7 @@
 				"source": [
 					"input_path = \"abfss://public@msftq5gzoqdmc2cy6poc.dfs.core.windows.net/healthcare/covid/\""
 				],
-				"execution_count": 20
+				"execution_count": 24
 			},
 			{
 				"cell_type": "code",
@@ -88,10 +107,10 @@
 					}
 				},
 				"source": [
-					"df = spark.read.load(input_path+'covid_tracking.csv', format='csv')\r\n",
+					"df = spark.read.csv(input_path+'covid_tracking.csv')\r\n",
 					"df.show()"
 				],
-				"execution_count": 22
+				"execution_count": 28
 			},
 			{
 				"cell_type": "code",
