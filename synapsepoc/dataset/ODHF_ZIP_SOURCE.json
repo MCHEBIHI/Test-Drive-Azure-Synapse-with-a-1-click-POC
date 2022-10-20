@@ -1,0 +1,27 @@
+{
+	"name": "ODHF_ZIP_SOURCE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HttpServerCanadianOpenDataHealthcareLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "CanadianHealthcare"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "/n1/pub/13-26-0001/2020001/ODHF_v1.1.zip"
+			},
+			"columnDelimiter": ",",
+			"compressionCodec": "ZipDeflate",
+			"compressionLevel": "Optimal",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
