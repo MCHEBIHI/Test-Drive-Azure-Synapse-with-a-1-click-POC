@@ -764,6 +764,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "odhf_v1.csv",
 						"folderPath": "CanadianHealthcare/raw",
 						"fileSystem": "public"
 					},
