@@ -1,5 +1,5 @@
 {
-	"name": "ODFH_Pipeline",
+	"name": "covid",
 	"properties": {
 		"activities": [
 			{
@@ -16,42 +16,44 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "BinarySource",
+						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "HttpReadSettings",
 							"requestMethod": "GET"
 						},
 						"formatSettings": {
-							"type": "BinaryReadSettings",
-							"compressionProperties": {
-								"type": "ZipDeflateReadSettings"
-							}
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
-						"type": "BinarySink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
 						}
 					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
-						"referenceName": "OdfhZipSource",
+						"referenceName": "CovidCsvSource",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "OdfhZipSink",
+						"referenceName": "CovidCsvSink",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
 		"folder": {
-			"name": "CanadianHealthcare"
+			"name": "Healthcare_usecases"
 		},
 		"annotations": []
 	}

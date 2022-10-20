@@ -1,0 +1,30 @@
+{
+	"name": "CovidCsvSink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TripFaresDataLakeStorageLinkedService",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"keyVaultName": "kvmsftq5gzoqdmc2cy6poc",
+				"datalakeAccountName": "msftq5gzoqdmc2cy6poc"
+			}
+		},
+		"folder": {
+			"name": "healthcare_usecase"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "healthcare/covid",
+				"fileSystem": "public"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
