@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "IngestHTTPZipFile_To_RAWZone",
+				"name": "Ingest_HTTP_Zip_to_csv_Raw",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -39,7 +39,15 @@
 							"fileExtension": ".csv"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
