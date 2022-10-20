@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Ingest_HTTP_Zip_to_csv_Raw",
+				"name": "IngestHttpZipToLandingZone",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,16 +16,71 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
+						"type": "BinarySource",
 						"storeSettings": {
 							"type": "HttpReadSettings",
 							"requestMethod": "GET"
 						},
 						"formatSettings": {
-							"type": "DelimitedTextReadSettings",
+							"type": "BinaryReadSettings",
 							"compressionProperties": {
 								"type": "ZipDeflateReadSettings"
 							}
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "OdfhZipSource",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "OdfhZipSink",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "UnzipFileToCsvToRawZone",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "IngestHttpZipToLandingZone",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "CanadianHealthcare/Landing",
+							"wildcardFileName": "*.csv",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
@@ -51,7 +106,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ODHF_ZIP_SOURCE",
+						"referenceName": "OdfhZipLandingZone",
 						"type": "DatasetReference"
 					}
 				],
