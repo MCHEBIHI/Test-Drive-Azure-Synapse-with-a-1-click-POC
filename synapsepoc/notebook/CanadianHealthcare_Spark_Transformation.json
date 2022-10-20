@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "5ceea4e6-89b6-40e1-a33e-e2be8f0e4f33"
+				"spark.autotune.trackingId": "caeb58cc-31de-4739-8177-30d056f5a39d"
 			}
 		},
 		"metadata": {
@@ -51,12 +51,10 @@
 			{
 				"cell_type": "code",
 				"source": [
-					"import zipfile\n",
-					"from pyspark.sql import SparkSession\n",
 					"from pyspark.sql.types import *\n",
 					"from pyspark.sql.functions import *"
 				],
-				"execution_count": 2
+				"execution_count": 19
 			},
 			{
 				"cell_type": "code",
@@ -72,10 +70,9 @@
 					}
 				},
 				"source": [
-					"input_path = \"https://msftq5gzoqdmc2cy6poc.blob.core.windows.net/public/CanadianHealthcare/raw/\"\r\n",
-					"output_path = \"https://msftq5gzoqdmc2cy6poc.blob.core.windows.net/public/CanadianHealthcare/silver/\""
+					"input_path = \"abfss://public@msftq5gzoqdmc2cy6poc.dfs.core.windows.net/healthcare/covid/\""
 				],
-				"execution_count": 3
+				"execution_count": 20
 			},
 			{
 				"cell_type": "code",
@@ -91,22 +88,10 @@
 					}
 				},
 				"source": [
-					"spark = SparkSession.builder.appName(\"name\").getOrCreate()\r\n",
-					"\r\n",
-					"\r\n",
-					"\r\n",
-					"for file in [input_path+\"ODFH_V1.zip\"]:\r\n",
-					"    obj = \r\n",
-					"    with io.BytesIO(obj.get()[\"Body\"].read()) as tf:\r\n",
-					"        tf.seek(0)\r\n",
-					"        with zipfile.ZipFile(tf, mode='r') as zipf:\r\n",
-					"            for subfile in zipf.namelist():\r\n",
-					"                zipf.extract(subfile, outputZip)\r\n",
-					"        df = spark.read.option(\"header\", \"true\").csv(outputZip) \r\n",
-					"\r\n",
-					"df.write.format(\"delta\").save(output_path)"
+					"df = spark.read.load(input_path+'covid_tracking.csv', format='csv')\r\n",
+					"df.show()"
 				],
-				"execution_count": 5
+				"execution_count": 22
 			},
 			{
 				"cell_type": "code",
@@ -122,8 +107,7 @@
 					}
 				},
 				"source": [
-					"odfh_v1_df = spark.read.format(\"delta\").load(output_path)\r\n",
-					"display(odfh_v1_df)"
+					""
 				],
 				"execution_count": null
 			}
