@@ -43,7 +43,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "IngestHTTPZipFile_To_RAWZone",
+						"name": "IngestHttpZipToLandingZone",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -56,16 +56,73 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "DelimitedTextSource",
+								"type": "BinarySource",
 								"storeSettings": {
 									"type": "HttpReadSettings",
 									"requestMethod": "GET"
 								},
 								"formatSettings": {
-									"type": "DelimitedTextReadSettings",
+									"type": "BinaryReadSettings",
 									"compressionProperties": {
 										"type": "ZipDeflateReadSettings"
 									}
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "FlattenHierarchy"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "OdfhZipSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OdfhZipSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "UnzipFileToCsvToRawZone",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "IngestHttpZipToLandingZone",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "CanadianHealthcare/Landing",
+									"wildcardFileName": "*.csv",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
 								}
 							},
 							"sink": {
@@ -79,11 +136,19 @@
 									"fileExtension": ".csv"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "ODHF_ZIP_SOURCE",
+								"referenceName": "OdfhZipLandingZone",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -107,7 +172,9 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/datasets/ODHF_ZIP_SOURCE')]",
+				"[concat(variables('workspaceId'), '/datasets/OdfhZipSource')]",
+				"[concat(variables('workspaceId'), '/datasets/OdfhZipSink')]",
+				"[concat(variables('workspaceId'), '/datasets/OdfhZipLandingZone')]",
 				"[concat(variables('workspaceId'), '/datasets/ODFH_CSV_SINK')]"
 			]
 		},
@@ -1969,38 +2036,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/ODHF_ZIP_SOURCE')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "HttpServerCanadianOpenDataHealthcareLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "CanadianHealthcare"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "HttpServerLocation",
-						"relativeUrl": "/n1/pub/13-26-0001/2020001/ODHF_v1.1.zip"
-					},
-					"columnDelimiter": ",",
-					"compressionCodec": "ZipDeflate",
-					"compressionLevel": "Optimal",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/HttpServerCanadianOpenDataHealthcareLinkedService')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/ODFH_CSV_SINK')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
@@ -2027,6 +2062,100 @@
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/TripFaresDataLakeStorageLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/OdfhZipSource')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HttpServerCanadianOpenDataHealthcareLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "CanadianHealthcare"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "/n1/pub/13-26-0001/2020001/ODHF_v1.1.zip"
+					},
+					"compression": {
+						"type": "ZipDeflate",
+						"level": "Optimal"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HttpServerCanadianOpenDataHealthcareLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/OdfhZipSink')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "TripFaresDataLakeStorageLinkedService",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"keyVaultName": "kvmsftq5gzoqdmc2cy6poc",
+						"datalakeAccountName": "msftq5gzoqdmc2cy6poc"
+					}
+				},
+				"folder": {
+					"name": "CanadianHealthcare"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "CanadianHealthcare/Landing",
+						"fileSystem": "public"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/TripFaresDataLakeStorageLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/OdfhZipLandingZone')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "TripFaresDataLakeStorageLinkedService",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"keyVaultName": "kvmsftq5gzoqdmc2cy6poc",
+						"datalakeAccountName": "msftq5gzoqdmc2cy6poc"
+					}
+				},
+				"folder": {
+					"name": "CanadianHealthcare"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "*.csv",
+						"folderPath": "CanadianHealthcare/Landing",
+						"fileSystem": "public"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
 					"quoteChar": "\""
 				},
 				"schema": []
