@@ -17,7 +17,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "healthcare/covid",
+				"folderPath": "healthcare/covid/raw",
 				"fileSystem": "public"
 			},
 			"columnDelimiter": ",",
