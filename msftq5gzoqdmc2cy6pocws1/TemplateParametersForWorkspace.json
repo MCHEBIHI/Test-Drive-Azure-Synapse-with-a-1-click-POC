@@ -5,8 +5,26 @@
 		"workspaceName": {
 			"value": "msftq5gzoqdmc2cy6pocws1"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"SqlServer1_connectionString": {
+			"value": ""
+		},
 		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
 			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://msftq5gzoqdmc2cy6poc.dfs.core.windows.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://kvmsftq5gzoqdmc2cy6poc.vault.azure.net/"
+		},
+		"HttpServerHealthCareUseCase_properties_typeProperties_url": {
+			"value": "https://pandemicdatalake.blob.core.windows.net"
 		},
 		"HttpServerTripDataLinkedService_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/Azure/Test-Drive-Azure-Synapse-with-a-1-click-POC/main/tripDataAndFaresCSV/trip-data.csv"
@@ -19,9 +37,6 @@
 		},
 		"keyVaultLinkedservice_properties_typeProperties_baseUrl": {
 			"value": "@{concat('https://',linkedService().keyVaultName,'.vault.azure.net/')}"
-		},
-		"HttpServerHealthCareUseCase_properties_typeProperties_url": {
-			"value": "https://pandemicdatalake.blob.core.windows.net"
 		}
 	}
 }
