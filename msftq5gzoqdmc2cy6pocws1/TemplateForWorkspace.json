@@ -1916,148 +1916,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/CanadianHealthcare_Spark_Transformation')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "ws1sparkpool1",
-					"type": "BigDataPoolReference"
-				},
-				"sessionProperties": {
-					"driverMemory": "56g",
-					"driverCores": 8,
-					"executorMemory": "56g",
-					"executorCores": 8,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "c95b0bd2-f5e3-4539-b6ac-7f0a2dea1ad3"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/rg_dataai_demos/providers/Microsoft.Synapse/workspaces/msftq5gzoqdmc2cy6pocws1/bigDataPools/ws1sparkpool1",
-						"name": "ws1sparkpool1",
-						"type": "Spark",
-						"endpoint": "https://msftq5gzoqdmc2cy6pocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/ws1sparkpool1",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "2.4",
-						"nodeCount": 5,
-						"cores": 8,
-						"memory": 56
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
-					{
-						"cell_type": "code",
-						"source": [
-							"from pyspark.sql.types import *\n",
-							"from pyspark.sql.functions import *"
-						],
-						"outputs": [],
-						"execution_count": 23
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", \"TripFaresDataLakeStorageLinkedService\") \r\n",
-							"spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\") "
-						],
-						"outputs": [],
-						"execution_count": 27
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"input_path = \"abfss://public@msftq5gzoqdmc2cy6poc.dfs.core.windows.net/healthcare/covid/\""
-						],
-						"outputs": [],
-						"execution_count": 24
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"df = spark.read.csv(input_path+'covid_tracking.csv')\r\n",
-							"df.show()"
-						],
-						"outputs": [],
-						"execution_count": 28
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/Data Exploration and ML Modeling - NYC taxi predict using Spark MLlib')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -2485,6 +2343,382 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/bronze_hr_department_pipeline')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "bronze"
+				},
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "ws1sparkpool1",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "de22eeab-70a4-4924-a2e8-570ddd54bca3"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/rg_dataai_demos/providers/Microsoft.Synapse/workspaces/msftq5gzoqdmc2cy6pocws1/bigDataPools/ws1sparkpool1",
+						"name": "ws1sparkpool1",
+						"type": "Spark",
+						"endpoint": "https://msftq5gzoqdmc2cy6pocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/ws1sparkpool1",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "2.4",
+						"nodeCount": 5,
+						"cores": 8,
+						"memory": 56,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"microsoft": {
+								"language": "python"
+							}
+						},
+						"source": [
+							"%%pyspark\r\n",
+							"from pyspark.sql import SparkSession"
+						],
+						"outputs": [],
+						"execution_count": 15
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Azure storage access info\r\n",
+							"blob_account_name = 'msftq5gzoqdmc2cy6poc'\r\n",
+							"input_zone = 'landingzone'\r\n",
+							"linked_service_name = 'AzureDataLakeStorage1'\r\n",
+							"output_zone = 'bronzezone'"
+						],
+						"outputs": [],
+						"execution_count": 21
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"blob_sas_token = mssparkutils.credentials.getConnectionStringOrCreds(linked_service_name)\r\n",
+							"\r\n",
+							"spark.conf.set('fs.azure.sas.%s.%s.blob.core.windows.net' % (input_zone, blob_account_name), blob_sas_token)\r\n",
+							"spark.conf.set('fs.azure.sas.%s.%s.blob.core.windows.net' % (output_zone, blob_account_name), blob_sas_token)"
+						],
+						"outputs": [],
+						"execution_count": 22
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"blob_relative_path = '/AdventureWork2008/HumanResourcesDepartment.parquet'\r\n",
+							"input_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (input_zone, blob_account_name, blob_relative_path)\r\n",
+							"\r\n",
+							"df = spark.read.load(input_path, format='parquet')"
+						],
+						"outputs": [],
+						"execution_count": 19
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"output_blob_relative_path = '/hr/department'\r\n",
+							"input_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (output_zone, blob_account_name, output_blob_relative_path)\r\n",
+							"\r\n",
+							"df.write.format(\"delta\").mode(\"overwrite\").save(input_path)"
+						],
+						"outputs": [],
+						"execution_count": 24
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/silver_hr_department_pipeline')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "silver"
+				},
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "ws1sparkpool1",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "f522d6ce-22ad-4def-951d-d43a9cb71dfb"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/rg_dataai_demos/providers/Microsoft.Synapse/workspaces/msftq5gzoqdmc2cy6pocws1/bigDataPools/ws1sparkpool1",
+						"name": "ws1sparkpool1",
+						"type": "Spark",
+						"endpoint": "https://msftq5gzoqdmc2cy6pocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/ws1sparkpool1",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "2.4",
+						"nodeCount": 5,
+						"cores": 8,
+						"memory": 56,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"microsoft": {
+								"language": "python"
+							}
+						},
+						"source": [
+							"%%pyspark\r\n",
+							"from pyspark.sql import SparkSession\r\n",
+							"from pyspark.sql.functions import *"
+						],
+						"outputs": [],
+						"execution_count": 8
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Azure storage access info\r\n",
+							"blob_account_name = 'msftq5gzoqdmc2cy6poc'\r\n",
+							"input_zone = 'bronzezone'\r\n",
+							"linked_service_name = 'AzureDataLakeStorage1'\r\n",
+							"output_zone = 'silverzone'"
+						],
+						"outputs": [],
+						"execution_count": 3
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"blob_sas_token = mssparkutils.credentials.getConnectionStringOrCreds(linked_service_name)\r\n",
+							"\r\n",
+							"spark.conf.set('fs.azure.sas.%s.%s.blob.core.windows.net' % (input_zone, blob_account_name), blob_sas_token)\r\n",
+							"spark.conf.set('fs.azure.sas.%s.%s.blob.core.windows.net' % (output_zone, blob_account_name), blob_sas_token)"
+						],
+						"outputs": [],
+						"execution_count": 4
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"blob_relative_path = '/hr/department'\r\n",
+							"input_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (input_zone, blob_account_name, blob_relative_path)\r\n",
+							"\r\n",
+							"df = spark.read.load(input_path, format='parquet')\r\n",
+							"display(df.limit(10))\r\n",
+							"df.printSchema()"
+						],
+						"outputs": [],
+						"execution_count": 7
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"silver_df = df.withColumnRenamed('ModifiedDate', 'ingestedDate').withColumn(\"UpdatedDate\",  current_timestamp())\r\n",
+							"\r\n",
+							"display(silver_df.limit(10))"
+						],
+						"outputs": [],
+						"execution_count": 18
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"output_blob_relative_path = '/hr/department'\r\n",
+							"output_file = 'wasbs://%s@%s.blob.core.windows.net/%s' % (output_zone, blob_account_name, output_blob_relative_path)\r\n",
+							"\r\n",
+							"silver_df.write.format(\"delta\").mode(\"overwrite\").save(output_file)"
+						],
+						"outputs": [],
+						"execution_count": 20
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"output_blob_relative_path = '/hr/department'\r\n",
+							"output_file = 'wasbs://%s@%s.blob.core.windows.net/%s' % (output_zone, blob_account_name, output_blob_relative_path)\r\n",
+							"\r\n",
+							"df = spark.read.format('delta').load(output_file)\r\n",
+							"display(df.limit(10))\r\n",
+							"df.printSchema()"
+						],
+						"outputs": [],
+						"execution_count": 23
+					}
+				]
+			},
+			"dependsOn": []
 		}
 	]
 }
