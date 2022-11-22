@@ -1,0 +1,155 @@
+{
+	"name": "bronze_hr_department_pipeline",
+	"properties": {
+		"folder": {
+			"name": "bronze"
+		},
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "ws1sparkpool1",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "d6d2c417-15a4-44f5-871a-f0f34bc6f60e"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/7cc7cbc5-1638-407e-b7a7-a916151b1c00/resourceGroups/rg_dataai_demos/providers/Microsoft.Synapse/workspaces/msftq5gzoqdmc2cy6pocws1/bigDataPools/ws1sparkpool1",
+				"name": "ws1sparkpool1",
+				"type": "Spark",
+				"endpoint": "https://msftq5gzoqdmc2cy6pocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/ws1sparkpool1",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 5,
+				"cores": 8,
+				"memory": 56,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					}
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"from pyspark.sql import SparkSession"
+				],
+				"execution_count": 15
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Azure storage access info\r\n",
+					"blob_account_name = 'msftq5gzoqdmc2cy6poc'\r\n",
+					"input_zone = 'landingzone'\r\n",
+					"linked_service_name = 'AzureDataLakeStorage1'\r\n",
+					"output_zone = 'bronzezone'"
+				],
+				"execution_count": 21
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"blob_sas_token = mssparkutils.credentials.getConnectionStringOrCreds(linked_service_name)\r\n",
+					"\r\n",
+					"spark.conf.set('fs.azure.sas.%s.%s.blob.core.windows.net' % (input_zone, blob_account_name), blob_sas_token)\r\n",
+					"spark.conf.set('fs.azure.sas.%s.%s.blob.core.windows.net' % (output_zone, blob_account_name), blob_sas_token)"
+				],
+				"execution_count": 22
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"blob_relative_path = '/AdventureWork2008/HumanResourcesDepartment.parquet'\r\n",
+					"input_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (input_zone, blob_account_name, blob_relative_path)\r\n",
+					"\r\n",
+					"df = spark.read.load(input_path, format='parquet')"
+				],
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"output_blob_relative_path = '/hr/department'\r\n",
+					"input_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (output_zone, blob_account_name, output_blob_relative_path)\r\n",
+					"\r\n",
+					"df.write.format(\"delta\").mode(\"overwrite\").save(input_path)"
+				],
+				"execution_count": 24
+			}
+		]
+	}
+}
