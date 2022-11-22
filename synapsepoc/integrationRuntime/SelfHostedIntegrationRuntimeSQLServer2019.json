@@ -1,0 +1,6 @@
+{
+	"name": "SelfHostedIntegrationRuntimeSQLServer2019",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
