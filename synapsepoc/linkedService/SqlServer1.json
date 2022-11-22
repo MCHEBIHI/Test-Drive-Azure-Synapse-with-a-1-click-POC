@@ -1,0 +1,22 @@
+{
+	"name": "SqlServer1",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Data Source=SQLServer2019;Initial Catalog=AdventureWorks2008R2;User ID=mchebihi",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "vmPass"
+			}
+		},
+		"connectVia": {
+			"referenceName": "SelfHostedIntegrationRuntimeSQLServer2019",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
