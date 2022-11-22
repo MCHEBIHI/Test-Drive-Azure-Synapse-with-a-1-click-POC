@@ -1,0 +1,134 @@
+{
+	"name": "CopyPipeline_AdventureWork2008_IaaS",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach_g2w",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_g2w",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "HumanResources.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "landingzone//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_g2w",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_g2w",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"table": "Department"
+						},
+						"destination": {
+							"fileName": "HumanResourcesDepartment.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "Employee"
+						},
+						"destination": {
+							"fileName": "HumanResourcesEmployee.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "EmployeeDepartmentHistory"
+						},
+						"destination": {
+							"fileName": "HumanResourcesEmployeeDepartmentHistory.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "EmployeePayHistory"
+						},
+						"destination": {
+							"fileName": "HumanResourcesEmployeePayHistory.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "JobCandidate"
+						},
+						"destination": {
+							"fileName": "HumanResourcesJobCandidate.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "Shift"
+						},
+						"destination": {
+							"fileName": "HumanResourcesShift.parquet"
+						}
+					}
+				]
+			}
+		},
+		"annotations": []
+	}
+}
