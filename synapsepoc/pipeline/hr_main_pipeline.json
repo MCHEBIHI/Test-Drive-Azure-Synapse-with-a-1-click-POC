@@ -1,0 +1,94 @@
+{
+	"name": "hr_main_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "CopyPipeline_AdventureWork_IaaS_HR",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "bronze_layer",
+				"type": "SynapseNotebook",
+				"dependsOn": [
+					{
+						"activity": "Execute Pipeline1",
+						"dependencyConditions": [
+							"Succeeded",
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": "bronze_hr_department_pipeline",
+						"type": "NotebookReference"
+					},
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "ws1sparkpool1",
+						"type": "BigDataPoolReference"
+					},
+					"executorSize": "Medium",
+					"conf": {
+						"spark.dynamicAllocation.enabled": false
+					},
+					"driverSize": "Medium"
+				}
+			},
+			{
+				"name": "silver_layer",
+				"type": "SynapseNotebook",
+				"dependsOn": [
+					{
+						"activity": "bronze_layer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": "silver_hr_department_pipeline",
+						"type": "NotebookReference"
+					},
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "ws1sparkpool1",
+						"type": "BigDataPoolReference"
+					},
+					"executorSize": "Medium",
+					"conf": {
+						"spark.dynamicAllocation.enabled": false
+					},
+					"driverSize": "Medium"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
