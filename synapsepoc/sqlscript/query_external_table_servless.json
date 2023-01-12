@@ -1,0 +1,17 @@
+{
+	"name": "query_external_table_servless",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP 100 * FROM [dbo].[department]\nGo",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "hr",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
