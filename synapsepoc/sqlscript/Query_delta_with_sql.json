@@ -1,0 +1,17 @@
+{
+	"name": "Query_delta_with_sql",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://msftq5gzoqdmc2cy6poc.dfs.core.windows.net/bronzezone/hr/department/',\n        FORMAT = 'DELTA'\n    ) AS rows\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
