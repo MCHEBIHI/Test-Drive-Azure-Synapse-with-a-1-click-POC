@@ -12,10 +12,10 @@
 			"value": ""
 		},
 		"SqlServer1_connectionString": {
-			"value": ""
+			"value": "Integrated Security=False;Data Source=SQLServer2019;Initial Catalog=AdventureWorks2008R2;User ID=mchebihi"
 		},
 		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
-			"value": ""
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().SynapseWorkspaceName};Initial Catalog=@{linkedService().SQLDedicatedPoolName};User ID=@{linkedService().SQLLoginUsername}"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://msftq5gzoqdmc2cy6poc.dfs.core.windows.net/"
