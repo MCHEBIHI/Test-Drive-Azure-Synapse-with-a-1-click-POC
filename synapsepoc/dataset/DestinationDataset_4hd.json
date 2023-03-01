@@ -1,0 +1,16 @@
+{
+	"name": "DestinationDataset_4hd",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "testAutoCreateSchema",
+			"table": "HumanResourcesDepartment"
+		}
+	}
+}
